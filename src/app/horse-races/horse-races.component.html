@@ -1,0 +1,17 @@
+<p>
+  horse-races works!
+  {{totalSeconds}}
+  <li *ngFor="let race of horseRaces">
+      {{ race.time }} seconds
+      <div *ngFor="let horse of race.horses; index as horseIndex;">
+        
+        <div *ngIf="horse.speed * race.time >= horse.endurance; else elseBlock">
+           
+        </div>
+        <ng-template #elseBlock>
+          
+        </ng-template>
+        {{ horse.distanceCovered }} meters
+      </div>
+    </li>
+</p>
