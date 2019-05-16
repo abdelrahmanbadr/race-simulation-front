@@ -6,19 +6,34 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./horse-races.component.css']
 })
 export class HorseRacesComponent implements OnInit {
-  totalSeconds = 0;
+
+  
   // each time create new race will be appended to this list
   //will add new property called time for each object 
-  horseRaces = [
-    {
-      "distance": 1500,
+  horseRaces = []
+    
+  constructor() { 
+  
+  }
+
+  ngOnInit() {
+    
+  }
+
+  createRace() {
+      //will fetch new object and append it to horse races
+    // then get it's index in the array and pass it to  countUpHorsesDistanceCovered()
+    // this reponse should be mapped to match this form from mapper service
+    var object = {
+      "distance": 100,
       "time":0,
+      "finished":false,
       "horses": [
         {
           "speed": 8,
           "endurance": 400,
           "speedShortage": 2,
-          "distanceCovered":0//finish at 233.3 seconds
+          "distanceCovered":0
         },
         {
           "speed": 10,
@@ -34,53 +49,50 @@ export class HorseRacesComponent implements OnInit {
         }
       ]
     }
-  ]
+    this.horseRaces.push(object)
+    this.countUpHorsesDistanceCovered(this.horseRaces.length-1)
   
-  
-
-  constructor() { 
-  
-  
-    this.countUpHorsesDistanceCovered()
   }
 
-  ngOnInit() {
-    
-  }
-
-  createRace() {
-    //will fetch new object and append it to horse races
-    // then get it's index in the array and pass it to 
-  }
-
-   countUpHorsesDistanceCovered(){
+   countUpHorsesDistanceCovered(index){
      //each race should have it's own interval
     var interval = setInterval(() => {
-      ++this.horseRaces[0].time;
+     var finishedHorses = []
+      ++this.horseRaces[index].time;
+      var race = this.horseRaces[index]
       
-      this.horseRaces.forEach(race => {
-        race.horses.forEach(horse => {
+        race.horses.forEach((horse,index) => {
+
           if (horse.distanceCovered <= race.distance) {
             if (horse.distanceCovered >= horse.endurance) {
               horse.distanceCovered += horse.speed - horse.speedShortage
             }else{
               horse.distanceCovered += horse.speed
             }
+            if (horse.distanceCovered >= race.distance){
+              horse.distanceCovered = race.distance
+              finishedHorses[index] = true
+             
+            }
           }
-          
-        });
+          if (finishedHorses.filter(Boolean).length == race.horses.length) {
+            race.finished = true
+            clearInterval(interval);
+          }
       });
     }, 1000);
   };
  
   clearTimer(){
-   // clearInterval(interval);
+   // 
   }
 
   //advance all races with 10 seconds
   progress(){
-    this.totalSeconds += 10
+   
   }
+
+  
 
   
 

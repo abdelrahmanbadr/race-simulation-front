@@ -1,6 +1,6 @@
 <p>
   horse-races works!
-  {{totalSeconds}}
+  <button (click)="createRace()">Creat</button>
   <li *ngFor="let race of horseRaces">
       {{ race.time }} seconds
       <div *ngFor="let horse of race.horses; index as horseIndex;">
