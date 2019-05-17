@@ -33,19 +33,22 @@ export class HorseRacesComponent implements OnInit {
           "speed": 8,
           "endurance": 400,
           "speedShortage": 2,
-          "distanceCovered":0
+          "distanceCovered":0,
+          "rank":1,
         },
         {
           "speed": 10,
           "endurance": 500,
           "speedShortage": 3,
-          "distanceCovered":0
+          "distanceCovered":0,
+          "rank":2,
         },
         {
           "speed": 13,
           "endurance": 800,
           "speedShortage": 4,
-          "distanceCovered":0
+          "distanceCovered":0,
+          "rank":3,
         }
       ]
     }
