@@ -1,17 +1,80 @@
-<p>
-  horse-races works!
-  <button (click)="createRace()">Creat</button>
-  <li *ngFor="let race of horseRaces">
-      {{ race.time }} seconds
-      <div *ngFor="let horse of race.horses; index as horseIndex;">
-        
-        <div *ngIf="horse.speed * race.time >= horse.endurance; else elseBlock">
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+    
+<div class="container">
+   
+  <h2>Horse Races</h2>
+  <div class="row">
+    <div class="col-md-1">
+      <button [disabled]="buttonDisabled == true"  (click)="createRace()" class="btn btn-primary ">Creat Race</button>  
+    </div>     
+    <div class="col-md-1">   
+      <button (click)="advanceRaces()"  class="btn btn-primary">Progress</button>  
+    </div>     
+  </div>
+                                                                   
+  <div class="table-responsive">          
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Time Passed</th>
+        <th>Horse Psotion 1</th>
+        <th>Horse Psotion 2</th>
+        <th>Horse Psotion 3</th>
+        <th>Horse Psotion 4</th>
+        <th>Horse Psotion 5</th>
+        <th>Horse Psotion 6</th>
+        <th>Horse Psotion 7</th>
+        <th>Horse Psotion 7</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let race of horseRaces; index as raceIndex;">  
+        <td>{{ race.secondsPassed }} seconds</td>
+          <td *ngFor="let horse of race.horses ; index as horseIndex;">
+              {{ horse.distanceCovered }} meters
+            </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Last 5 Races Results</h2>
+  <div class="table-responsive">          
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Horse Position 1</th>
+            <th>Horse Position 2</th>
+            <th>Horse Position 3</th>
            
-        </div>
-        <ng-template #elseBlock>
-          
-        </ng-template>
-        {{ horse.distanceCovered }} meters
-      </div>
-    </li>
-</p>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let result of racesResults;index as raceIndex;">  
+              <td>Race {{raceIndex+1}}</td>
+              <td *ngFor="let horse of result.horses ;">
+                  {{ horse.time_to_finish }} seconds
+                </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <h2>Best Result Ever Stats</h2>
+  speed : {{bestResultEver.speed}} <br>
+  endurance : {{bestResultEver.endurance}} <br>
+  strength : {{bestResultEver.strength}} <br>
+  <h4>Time To finish : {{bestResultEver.time_to_finish}} seconds</h4> 
+</div>
+
+</body>
+</html>

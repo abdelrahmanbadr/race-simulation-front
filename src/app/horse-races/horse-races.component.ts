@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HorseRaceService } from '../services/horse-race.service';
 
 @Component({
   selector: 'app-horse-races',
@@ -10,51 +11,71 @@ export class HorseRacesComponent implements OnInit {
   
   // each time create new race will be appended to this list
   //will add new property called time for each object 
-  horseRaces = []
+  horseRaces;
+  racesResults;
+  bestResultEver;
+  buttonDisabled;
+ 
     
-  constructor() { 
+  constructor(private horseRaceService : HorseRaceService) { 
+   this.horseRaceService = horseRaceService;
   
+         
   }
 
   ngOnInit() {
+    //run first when page load
+    this.getHorseRaces()
+    this.getHorseRacesResults()
     
+     //run repeatedly every second
+    var interval = setInterval(() => {
+      this.getHorseRaces()
+    }, 1000);
+
+    //run repeatedly every 10 seconds
+    var interval = setInterval(() => {
+      this.getHorseRacesResults()
+    }, 10000);
+  }
+  getHorseRaces(){
+    this.horseRaceService.getHorseRaces().then(response=>{
+      this.horseRaces = response;
+      if (this.horseRaces.length < 3 ){ 
+        this.buttonDisabled = false
+        }else{
+          this.buttonDisabled = true
+        }
+    }, (err) => {
+      console.log(err);
+    });
+  }
+  getHorseRacesResults(){
+    this.horseRaceService.getHorseRacesResults().then(response=>{
+      this.racesResults = response["bestResultsForLastFiveRaces"];
+      this.bestResultEver = response["bestResultEver"];
+    }, (err) => {
+      console.log(err);
+    });
   }
 
   createRace() {
-      //will fetch new object and append it to horse races
-    // then get it's index in the array and pass it to  countUpHorsesDistanceCovered()
-    // this reponse should be mapped to match this form from mapper service
-    var object = {
-      "distance": 100,
-      "time":0,
-      "finished":false,
-      "horses": [
-        {
-          "speed": 8,
-          "endurance": 400,
-          "speedShortage": 2,
-          "distanceCovered":0,
-          "rank":1,
-        },
-        {
-          "speed": 10,
-          "endurance": 500,
-          "speedShortage": 3,
-          "distanceCovered":0,
-          "rank":2,
-        },
-        {
-          "speed": 13,
-          "endurance": 800,
-          "speedShortage": 4,
-          "distanceCovered":0,
-          "rank":3,
-        }
-      ]
+    if (this.horseRaces.length < 3 ){
+      this.horseRaceService.createHorseRace().then(response=>{
+        console.log("race created");
+      }, (err) => {
+        console.log(err);
+      });
     }
-    this.horseRaces.push(object)
-    this.countUpHorsesDistanceCovered(this.horseRaces.length-1)
-  
+    
+  }
+
+  advanceRaces() {
+    this.horseRaceService.advanceHorseRaces().then(response=>{
+      console.log("races advanced");
+    }, (err) => {
+      console.log(err);
+    });
   }
 
    countUpHorsesDistanceCovered(index){
