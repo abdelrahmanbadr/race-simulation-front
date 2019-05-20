@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl : "http://race-simulation.local:8090/api"
+  apiUrl : "http://race-simulation.local:8090/api/"
 };
 
 /*

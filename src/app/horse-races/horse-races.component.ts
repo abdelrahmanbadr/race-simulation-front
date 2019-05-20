@@ -15,9 +15,11 @@ export class HorseRacesComponent implements OnInit {
   racesResults;
   bestResultEver;
   buttonDisabled;
+  horseRacesCount;
  
     
   constructor(private horseRaceService : HorseRaceService) { 
+    this.horseRacesCount = 0
    this.horseRaceService = horseRaceService;
   
          
@@ -28,24 +30,21 @@ export class HorseRacesComponent implements OnInit {
     this.getHorseRaces()
     this.getHorseRacesResults()
     
-     //run repeatedly every second
+     //run repeatedly every 2 seconds
     var interval = setInterval(() => {
       this.getHorseRaces()
-    }, 1000);
+    }, 2000);
 
-    //run repeatedly every 10 seconds
+    //run repeatedly every 60 seconds
     var interval = setInterval(() => {
       this.getHorseRacesResults()
-    }, 10000);
+    }, 60000);
   }
   getHorseRaces(){
     this.horseRaceService.getHorseRaces().then(response=>{
       this.horseRaces = response;
-      if (this.horseRaces.length < 3 ){ 
-        this.buttonDisabled = false
-        }else{
-          this.buttonDisabled = true
-        }
+      this.horseRacesCount = this.horseRaces.length
+      
     }, (err) => {
       console.log(err);
     });
